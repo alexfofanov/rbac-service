@@ -7,7 +7,7 @@ from .models import User
 
 @admin.register(User)
 class UserAdmin(BaseUserAdmin):
-    """Админка пользователя"""
+    """Административная панель для пользователя"""
 
     model = User
 
