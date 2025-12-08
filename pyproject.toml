@@ -10,3 +10,8 @@ dependencies = [
     "psycopg[binary]>=3.3.2",
     "pyjwt>=2.10.1",
 ]
+
+[dependency-groups]
+dev = [
+    "ruff>=0.14.8",
+]
