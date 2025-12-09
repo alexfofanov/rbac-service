@@ -9,9 +9,9 @@ from authentication.views import (
 )
 
 urlpatterns = [
-    path('auth/register', RegisterAPIView.as_view()),
-    path('auth/login', LoginAPIView.as_view()),
-    path('auth/logout', LogoutAPIView.as_view()),
-    path('auth/refresh', RefreshAPIView.as_view()),
-    path('auth/delete', DeleteUserAPIView.as_view()),
+    path('register/', RegisterAPIView.as_view()),
+    path('login/', LoginAPIView.as_view()),
+    path('logout/', LogoutAPIView.as_view()),
+    path('refresh/', RefreshAPIView.as_view()),
+    path('delete/', DeleteUserAPIView.as_view()),
 ]
