@@ -5,8 +5,7 @@ target-version = "py312"
 src = []
 
 exclude = [
-    "tests/**",
-    "migrations/**",
+    "*/migrations/*",
 ]
 
 [format]
