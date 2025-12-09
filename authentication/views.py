@@ -5,10 +5,9 @@ from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from authentication.serializers import RegisterSerializer
-
 from authentication.jwt import create_access_token, create_refresh_token, decode_token
 from authentication.models import BlacklistedToken
+from authentication.serializers import RegisterSerializer
 
 
 class RegisterAPIView(APIView):
