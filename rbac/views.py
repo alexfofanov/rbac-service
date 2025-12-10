@@ -16,6 +16,8 @@ from rbac.serializers import (
 class RoleViewSet(viewsets.ModelViewSet):
     """CRUD-операции ролей"""
 
+    element_name = 'rbac'
+
     queryset = Role.objects.all()
     serializer_class = RoleSerializer
 
@@ -23,12 +25,16 @@ class RoleViewSet(viewsets.ModelViewSet):
 class BusinessElementViewSet(viewsets.ModelViewSet):
     """СRUD-операции бизнес-элементов"""
 
+    element_name = 'rbac'
+
     queryset = BusinessElement.objects.all()
     serializer_class = BusinessElementSerializer
 
 
 class PermissionRuleViewSet(viewsets.ModelViewSet):
     """CRUD-операции, фильтрация и получение правил доступа по роли"""
+
+    element_name = 'rbac'
 
     queryset = PermissionRule.objects.select_related('role', 'element')
     serializer_class = AccessRoleRuleSerializer

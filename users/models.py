@@ -1,7 +1,7 @@
 from django.contrib.auth.base_user import AbstractBaseUser, BaseUserManager
 from django.db import models
 
-from rbac.models import Role
+from rbac.models import PermissionRule, Role
 
 
 class UserManager(BaseUserManager):
@@ -63,3 +63,10 @@ class User(AbstractBaseUser):
         self.is_deleted = True
         self.is_active = False
         self.save()
+
+    def get_rule(self, element_name: str) -> PermissionRule | None:
+        """Возвращение правила доступа пользователя для указанного элемента"""
+
+        return PermissionRule.objects.filter(
+            role=self.role, element__name=element_name
+        ).first()
