@@ -21,6 +21,7 @@ INSTALLED_APPS = [
     'users',
     'authentication',
     'rbac',
+    'orders',
 ]
 
 MIDDLEWARE = [
@@ -31,13 +32,10 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'authentication.middleware.JWTUserMiddleware',
 ]
 
-REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES': [
-        'authentication.authentication.JWTAuthentication',
-    ]
-}
+REST_FRAMEWORK = {'DEFAULT_AUTHENTICATION_CLASSES': []}
 
 ROOT_URLCONF = 'core.urls'
 
@@ -78,6 +76,29 @@ AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator'},
     {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator'},
 ]
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'verbose': {
+            'format': '{asctime} | {levelname} | {module} | {name} | {message}',
+            'style': '{',
+        },
+    },
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+            'formatter': 'verbose',
+        },
+    },
+    'loggers': {
+        '': {
+            'handlers': ['console'],
+            'level': 'DEBUG',
+        },
+    },
+}
 
 LANGUAGE_CODE = 'en-us'
 

@@ -54,10 +54,8 @@ class RefreshAPIView(APIView):
 class LogoutAPIView(APIView):
     """Выход пользователя из системы"""
 
-    permission_classes = [IsAuthenticated]
-
     def post(self, request: Request) -> Response:
-        token = request.auth
+        token = getattr(request, '_jwt_token', None)
         BlacklistedToken.objects.create(token=token)
         return Response({'detail': 'Logged out'})
 

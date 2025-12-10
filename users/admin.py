@@ -15,16 +15,36 @@ class UserAdmin(BaseUserAdmin):
         'email',
         'first_name',
         'last_name',
+        'role',
         'is_active',
         'is_staff',
         'is_superuser',
     )
-    list_filter = ('is_active', 'is_staff', 'is_superuser')
+    list_filter = ('is_active', 'is_staff', 'is_superuser', 'role')  # ← добавлено
 
     fieldsets = (
         (None, {'fields': ('email', 'password')}),
-        (_('Personal info'), {'fields': ('first_name', 'last_name', 'middle_name')}),
-        (_('Permissions'), {'fields': ('is_active', 'is_staff', 'is_superuser')}),
+        (
+            _('Personal info'),
+            {
+                'fields': (
+                    'first_name',
+                    'last_name',
+                    'middle_name',
+                    'role',
+                )
+            },
+        ),
+        (
+            _('Permissions'),
+            {
+                'fields': (
+                    'is_active',
+                    'is_staff',
+                    'is_superuser',
+                )
+            },
+        ),
     )
 
     add_fieldsets = (
@@ -38,6 +58,7 @@ class UserAdmin(BaseUserAdmin):
                     'last_name',
                     'password1',
                     'password2',
+                    'role',
                     'is_active',
                     'is_staff',
                     'is_superuser',
@@ -46,6 +67,6 @@ class UserAdmin(BaseUserAdmin):
         ),
     )
 
-    search_fields = ('email', 'first_name', 'last_name')
+    search_fields = ('email', 'first_name', 'last_name', 'role__name')
     ordering = ('email',)
     filter_horizontal = ()
