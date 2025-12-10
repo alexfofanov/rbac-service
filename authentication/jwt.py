@@ -5,7 +5,7 @@ from django.utils import timezone
 
 import jwt
 
-ACCESS_EXPIRES_MIN = 10
+ACCESS_EXPIRES_MIN = 180
 REFRESH_EXPIRES_DAYS = 7
 
 

@@ -12,6 +12,7 @@ urlpatterns = [
     path('api/v1/auth/', include('authentication.urls')),
     path('api/v1/rbac/', include(rbac_router.urls)),
     path('api/v1/', include('orders.urls')),
+    path('api/v1/', include('users.urls')),
 ]
 
 schema_view = get_schema_view(
