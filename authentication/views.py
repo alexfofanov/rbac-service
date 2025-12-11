@@ -1,6 +1,5 @@
 from django.contrib.auth import authenticate
 
-from rest_framework.permissions import IsAuthenticated
 from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -63,8 +62,6 @@ class LogoutAPIView(APIView):
 class DeleteUserAPIView(APIView):
     """Удаление пользователя"""
 
-    permission_classes = [IsAuthenticated]
-
     def delete(self, request: Request) -> Response:
-        request.user.soft_delete()
+        request._jwt_user.soft_delete()
         return Response({'detail': 'Soft deleted'})
