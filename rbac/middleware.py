@@ -5,6 +5,8 @@ from typing import Any, Callable
 from django.http import HttpRequest as Request, JsonResponse
 from django.utils.deprecation import MiddlewareMixin
 
+from rest_framework import status
+
 from users.models import User
 
 from rbac.services import can
@@ -50,7 +52,10 @@ class RBACMiddleware(MiddlewareMixin):
 
         user = getattr(request, 'user', None)
         if not getattr(user, 'is_authenticated', False):
-            return JsonResponse({'detail': 'Authentication required'}, status=401)
+            return JsonResponse(
+                {'detail': 'Authentication required'},
+                status=status.HTTP_401_UNAUTHORIZED,
+            )
 
         if any(path.startswith(auth_path) for auth_path in self.auth_only_paths):
             return None
@@ -59,7 +64,9 @@ class RBACMiddleware(MiddlewareMixin):
         view_class = getattr(getattr(resolver, 'func', None), 'cls', None)
         if not (view_class and hasattr(view_class, 'element_name')):
             logger.error(f'Element not found for path: {path}')
-            return JsonResponse({'detail': 'Element not found'}, status=403)
+            return JsonResponse(
+                {'detail': 'Element not found'}, status=status.HTTP_403_FORBIDDEN
+            )
 
         element_name = view_class.element_name
         action = self.method_action_map.get(method)
@@ -124,7 +131,9 @@ class RBACMiddleware(MiddlewareMixin):
             f'RBAC: user={user.id}, element={element_name}, action={action}, owner={owner_id}, allowed={allowed}'
         )
         if not allowed:
-            return JsonResponse({'detail': 'Permission denied'}, status=403)
+            return JsonResponse(
+                {'detail': 'Permission denied'}, status=status.HTTP_403_FORBIDDEN
+            )
         return None
 
     @staticmethod

@@ -1,6 +1,11 @@
+import os
 from pathlib import Path
 
+from dotenv import load_dotenv
+
 BASE_DIR = Path(__file__).resolve().parent.parent
+
+load_dotenv(BASE_DIR / '.env')
 
 SECRET_KEY = 'django-insecure-n=u3bp%2x2n_d00uepfy=!*c@97i(!l!&jd$%(x1fqmst5%#2*'
 
@@ -60,11 +65,11 @@ WSGI_APPLICATION = 'core.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'rbac_service',
-        'USER': 'rbac_service',
-        'PASSWORD': 'rbac_service',
-        'HOST': 'localhost',
-        'PORT': '5432',
+        'NAME': os.getenv('DB_NAME', 'rbac_service'),
+        'USER': os.getenv('DB_USER', 'rbac_service'),
+        'PASSWORD': os.getenv('DB_PASSWORD', 'rbac_service'),
+        'HOST': os.getenv('DB_HOST', 'localhost'),
+        'PORT': os.getenv('DB_PORT', '5432'),
     }
 }
 

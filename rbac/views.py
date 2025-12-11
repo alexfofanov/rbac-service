@@ -1,4 +1,4 @@
-from rest_framework import filters, viewsets
+from rest_framework import filters, status, viewsets
 from rest_framework.decorators import action
 from rest_framework.request import Request
 from rest_framework.response import Response
@@ -46,7 +46,9 @@ class PermissionRuleViewSet(viewsets.ModelViewSet):
     def by_role(self, request: Request) -> Response:
         role_id = request.query_params.get('role_id')
         if not role_id:
-            return Response({'detail': 'role_id is required'}, status=400)
+            return Response(
+                {'detail': 'role_id is required'}, status=status.HTTP_400_BAD_REQUEST
+            )
 
         qs = self.get_queryset().filter(role_id=role_id)
         serializer = self.get_serializer(qs, many=True)
