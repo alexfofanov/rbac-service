@@ -117,7 +117,7 @@ cp .env.sample .env
 ```
 Запуск сервиса: 
 ```
-docker compose up --build
+docker compose up --build -d
 ```
 Остановка сервиса: 
 ```
