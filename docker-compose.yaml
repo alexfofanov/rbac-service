@@ -1,0 +1,38 @@
+services:
+  postgres:
+    image: postgres:17.5
+    expose:
+      - 5432
+    env_file:
+      - .env
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres-rbac-service-data:/var/lib/postgresql/data
+    restart: unless-stopped
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U $POSTGRES_USER -d $POSTGRES_DB" ]
+      interval: 3s
+      timeout: 5s
+      retries: 3
+
+  django:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - 8000:8000
+    env_file:
+        - .env
+    depends_on:
+      postgres:
+        condition: service_healthy
+    command: >
+      sh -c "
+        uv run python manage.py migrate &&
+        uv run python manage.py seed_rbac &&
+        uv run python manage.py runserver 0.0.0.0:8000
+      "
+
+volumes:
+  postgres-rbac-service-data:
