@@ -6,6 +6,7 @@ src = []
 
 exclude = [
     "*/migrations/*",
+    "*/tests/*",
 ]
 
 [format]

@@ -119,6 +119,10 @@ cp .env.sample .env
 ```
 docker compose up --build -d
 ```
+Запуск тестов: 
+```
+docker compose exec django /app/.venv/bin/pytest -v
+```
 Остановка сервиса: 
 ```
 docker compose down -v

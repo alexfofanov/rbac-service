@@ -35,7 +35,7 @@ class PermissionRuleViewSet(viewsets.ModelViewSet):
     """CRUD-операции, фильтрация и получение правил доступа по роли"""
 
     element_name = 'rbac'
-
+    http_method_names = ['get', 'post', 'patch', 'delete']
     queryset = PermissionRule.objects.select_related('role', 'element')
     serializer_class = AccessRoleRuleSerializer
     filter_backends = [DjangoFilterBackend, filters.SearchFilter]

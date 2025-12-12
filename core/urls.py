@@ -10,7 +10,7 @@ from rbac.urls import router as rbac_router
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/v1/auth/', include('authentication.urls')),
-    path('api/v1/rbac/', include(rbac_router.urls)),
+    path('api/v1/rbac/', include('rbac.urls')),
     path('api/v1/', include('orders.urls')),
     path('api/v1/', include('users.urls')),
 ]
