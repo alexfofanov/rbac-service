@@ -5,7 +5,6 @@ from rest_framework import permissions
 
 from drf_yasg import openapi
 from drf_yasg.views import get_schema_view
-from rbac.urls import router as rbac_router
 
 urlpatterns = [
     path('admin/', admin.site.urls),

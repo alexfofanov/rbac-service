@@ -19,7 +19,7 @@ class UserRoleViewSet(viewsets.GenericViewSet):
         """Обновление роли пользователя"""
 
         user = self.get_object()
-        serializer = self.get_serializer(user, data=request.data, partial=True)
+        serializer = self.get_serializer(user, data=request.data, partial=False)
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response({'status': 'role updated'}, status=status.HTTP_200_OK)

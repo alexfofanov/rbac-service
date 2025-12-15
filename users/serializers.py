@@ -5,7 +5,7 @@ from .models import Role, User
 
 class UserRoleUpdateSerializer(serializers.ModelSerializer):
     role_id = serializers.PrimaryKeyRelatedField(
-        queryset=Role.objects.all(), source='role', write_only=True
+        queryset=Role.objects.all(), source='role', write_only=True, required=True
     )
 
     class Meta:
