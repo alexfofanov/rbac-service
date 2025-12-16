@@ -45,7 +45,7 @@ def test_login_user_invalid_credentials(api_client, create_user):
     data = {'email': 'login@example.com', 'password': 'wrongpassword'}
     response = api_client.post(url, data)
     assert response.status_code == 400
-    assert response.json()['detail'] == 'Invalid credentials'
+    assert 'Invalid credentials' in response.json()['non_field_errors']
 
 
 @pytest.mark.django_db

@@ -1,12 +1,11 @@
-from django.contrib.auth import authenticate
-
+from rest_framework import status
 from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from authentication.jwt import create_access_token, create_refresh_token, decode_token
 from authentication.models import BlacklistedToken
-from authentication.serializers import RegisterSerializer
+from authentication.serializers import LoginSerializer, RegisterSerializer
 
 
 class RegisterAPIView(APIView):
@@ -23,18 +22,17 @@ class LoginAPIView(APIView):
     """Вход пользователя в систему"""
 
     def post(self, request: Request) -> Response:
-        email = request.data['email']
-        password = request.data['password']
+        serializer = LoginSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
 
-        user = authenticate(email=email, password=password)
-        if not user:
-            return Response({'detail': 'Invalid credentials'}, status=400)
+        user = serializer.validated_data['user']
 
         return Response(
             {
                 'access': create_access_token(user.id),
                 'refresh': create_refresh_token(user.id),
-            }
+            },
+            status=status.HTTP_200_OK,
         )
 
 
@@ -45,7 +43,9 @@ class RefreshAPIView(APIView):
         token = request.data['refresh']
         payload = decode_token(token)
         if payload['type'] != 'refresh':
-            return Response({'detail': 'Invalid refresh'}, status=400)
+            return Response(
+                {'detail': 'Invalid refresh'}, status=status.HTTP_400_BAD_REQUEST
+            )
 
         return Response({'access': create_access_token(payload['sub'])})
 
