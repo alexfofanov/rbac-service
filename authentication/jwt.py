@@ -3,6 +3,8 @@ from datetime import timedelta
 from django.conf import settings
 from django.utils import timezone
 
+from rest_framework.exceptions import AuthenticationFailed
+
 import jwt
 
 ACCESS_EXPIRES_MIN = 180
@@ -38,4 +40,11 @@ def create_refresh_token(user_id: int):
 def decode_token(token: str):
     """Расшифровка токена"""
 
-    return jwt.decode(token, settings.SECRET_KEY, algorithms=['HS256'])
+    try:
+        return jwt.decode(token, settings.SECRET_KEY, algorithms=['HS256'])
+
+    except jwt.ExpiredSignatureError:
+        raise AuthenticationFailed('Token has expired') from None
+
+    except jwt.InvalidTokenError:
+        raise AuthenticationFailed('Invalid token') from None

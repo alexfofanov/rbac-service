@@ -4,6 +4,9 @@ from rest_framework import serializers
 
 from users.models import User
 
+from authentication.jwt import decode_token
+from authentication.models import BlacklistedToken
+
 
 class RegisterSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True)
@@ -32,4 +35,21 @@ class LoginSerializer(serializers.Serializer):
             raise serializers.ValidationError('Invalid credentials')
 
         attrs['user'] = user
+        return attrs
+
+
+class RefreshTokenSerializer(serializers.Serializer):
+    refresh = serializers.CharField()
+
+    def validate(self, attrs: dict) -> dict:
+        token = attrs['refresh']
+
+        if BlacklistedToken.objects.filter(token=token).exists():
+            raise serializers.ValidationError('Refresh token is blacklisted')
+
+        payload = decode_token(token)
+        if payload.get('type') != 'refresh':
+            raise serializers.ValidationError('Invalid refresh token')
+
+        attrs['payload'] = payload
         return attrs
