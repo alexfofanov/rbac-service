@@ -8,7 +8,7 @@ from rest_framework.request import Request
 
 import jwt
 
-from authentication.models import BlacklistedToken
+from authentication.utils import is_token_blocked
 
 logger = logging.getLogger(__name__)
 
@@ -32,7 +32,7 @@ class JWTUserMiddleware(MiddlewareMixin):
         token = auth_header.split()[1]
         logger.debug(f'Received JWT token: {token[:20]}...')
 
-        if BlacklistedToken.objects.filter(token=token).exists():
+        if is_token_blocked(token):
             logger.warning(f'Rejected blacklisted JWT token: {token[:20]}...')
             return None
 

@@ -4,12 +4,12 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from authentication.jwt import create_access_token, create_refresh_token
-from authentication.models import BlacklistedToken
 from authentication.serializers import (
     LoginSerializer,
     RefreshTokenSerializer,
     RegisterSerializer,
 )
+from authentication.utils import add_token_to_blocklist
 
 
 class RegisterAPIView(APIView):
@@ -50,7 +50,8 @@ class RefreshAPIView(APIView):
         payload = serializer.validated_data['payload']
         token = serializer.validated_data['refresh']
 
-        BlacklistedToken.objects.create(token=token)
+        add_token_to_blocklist(token)
+        # BlacklistedToken.objects.create(token=token)
 
         return Response(
             {'access': create_access_token(payload['sub'])},
@@ -63,7 +64,8 @@ class LogoutAPIView(APIView):
 
     def post(self, request: Request) -> Response:
         token = getattr(request, '_jwt_token', None)
-        BlacklistedToken.objects.create(token=token)
+        add_token_to_blocklist(token)
+        # BlacklistedToken.objects.create(token=token)
         return Response({'detail': 'Logged out'})
 
 

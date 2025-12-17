@@ -5,7 +5,7 @@ from rest_framework import serializers
 from users.models import User
 
 from authentication.jwt import decode_token
-from authentication.models import BlacklistedToken
+from authentication.utils import is_token_blocked
 
 
 class RegisterSerializer(serializers.ModelSerializer):
@@ -44,7 +44,7 @@ class RefreshTokenSerializer(serializers.Serializer):
     def validate(self, attrs: dict) -> dict:
         token = attrs['refresh']
 
-        if BlacklistedToken.objects.filter(token=token).exists():
+        if is_token_blocked(token):
             raise serializers.ValidationError('Refresh token is blacklisted')
 
         payload = decode_token(token)
