@@ -25,6 +25,7 @@ class RBACMiddleware(MiddlewareMixin):
         '/api/v1/auth/register',
         '/api/v1/auth/refresh',
         '/swagger/',
+        '/redoc/',
     ]
 
     auth_only_paths = [

@@ -51,7 +51,6 @@ class RefreshAPIView(APIView):
         token = serializer.validated_data['refresh']
 
         add_token_to_blocklist(token)
-        # BlacklistedToken.objects.create(token=token)
 
         return Response(
             {'access': create_access_token(payload['sub'])},
@@ -65,7 +64,6 @@ class LogoutAPIView(APIView):
     def post(self, request: Request) -> Response:
         token = getattr(request, '_jwt_token', None)
         add_token_to_blocklist(token)
-        # BlacklistedToken.objects.create(token=token)
         return Response({'detail': 'Logged out'})
 
 
