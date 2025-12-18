@@ -64,9 +64,9 @@ class RBACMiddleware(MiddlewareMixin):
         resolver = getattr(request, 'resolver_match', None)
         view_class = getattr(getattr(resolver, 'func', None), 'cls', None)
         if not (view_class and hasattr(view_class, 'element_name')):
-            logger.error(f'Element not found for path: {path}')
+            logger.error(f'Business element not found for path: {path}')
             return JsonResponse(
-                {'detail': 'Element not found'}, status=status.HTTP_403_FORBIDDEN
+                {'detail': 'Business element not found for path'}, status=status.HTTP_403_FORBIDDEN
             )
 
         element_name = view_class.element_name
