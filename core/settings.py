@@ -24,7 +24,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'corsheaders',
-    'drf_yasg',
+    'drf_spectacular',
     'users',
     'authentication',
     'rbac',
@@ -43,7 +43,10 @@ MIDDLEWARE = [
     'rbac.middleware.RBACMiddleware',
 ]
 
-REST_FRAMEWORK = {'DEFAULT_AUTHENTICATION_CLASSES': []}
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [],
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+}
 
 ROOT_URLCONF = 'core.urls'
 
@@ -116,7 +119,10 @@ LOGGING = {
     },
 }
 
-SWAGGER_USE_COMPAT_RENDERERS = False
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'RBAC API',
+    'VERSION': 'v1',
+}
 
 LANGUAGE_CODE = 'en-us'
 

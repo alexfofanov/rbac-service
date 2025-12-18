@@ -3,6 +3,8 @@ from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
+from drf_spectacular.utils import extend_schema
+
 from authentication.jwt import create_access_token, create_refresh_token
 from authentication.serializers import (
     LoginSerializer,
@@ -15,6 +17,7 @@ from authentication.utils import add_token_to_blocklist
 class RegisterAPIView(APIView):
     """Регистрация нового пользователя"""
 
+    @extend_schema(request=RegisterSerializer)
     def post(self, request: Request) -> Response:
         serializer = RegisterSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
@@ -25,6 +28,7 @@ class RegisterAPIView(APIView):
 class LoginAPIView(APIView):
     """Вход пользователя в систему"""
 
+    @extend_schema(request=LoginSerializer)
     def post(self, request: Request) -> Response:
         serializer = LoginSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
@@ -43,6 +47,7 @@ class LoginAPIView(APIView):
 class RefreshAPIView(APIView):
     """Обновление токена"""
 
+    @extend_schema(request=RefreshTokenSerializer)
     def post(self, request: Request) -> Response:
         serializer = RefreshTokenSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
